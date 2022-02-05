@@ -1,48 +1,69 @@
 namespace Fun.Blazor.Sample
 
+open System.Threading.Tasks
 open FSharp.Data.Adaptive
+open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
+open FSharp.Control.Reactive
+open MudBlazor
 open Fun.Blazor
+open Fun.Blazor.Sample.Services
 
 module App =
 
-  let private counter initial =
-    adaptiview () {
-      let! counter, setCounter = cval(initial).WithSetter()
-      p () { childContent $"Count: {counter}" }
+  let private player () =
+    html.inject
+      (fun (player: Player, files: FileManager, hook: IComponentHook) ->
+        let _songs = hook.UseStore Array.empty<string>
 
-      button () {
-        onclick (fun _ -> setCounter (counter + 1))
-        childContent "Increment"
-      }
+        let onSelectFiles _ =
+          task {
+            do! files.loadFiles ()
+            let! files = files.getFiles ()
+            _songs.Publish files
+          }
+          |> ignore
 
-      button () {
-        onclick (fun _ -> setCounter (counter - 1))
-        childContent "Decrement"
-      }
 
-      button () {
-        onclick (fun _ -> setCounter (initial))
-        childContent "Reset"
-      }
+        adaptiview () {
+          let! songs = hook.UseAVal _songs
 
-    }
+          nav {
+            button {
+              onclick onSelectFiles
+
+              "Select Directory"
+            }
+          }
+
+          ul {
+            Virtualize' {
+              Items songs
+              ChildContent
+                (fun song ->
+                  li {
+                    style' "cursor: pointer;"
+                    ondblclick (fun _ -> player.play song |> ignore)
+                    $"{song}"
+                  })
+            }
+
+          }
+
+        })
 
   let View () =
-    article () {
+    MudPaper'() {
       class' "app"
 
-      childContent [
-        main () {
-          childContent [
-            h1 () { childContent "Welcome to Fun.Blazor!" }
-            section () { childContent (counter 0) }
-            section () { childContent (counter 100) }
+      main {
+        h1 { "Welcome to Fun.Blazor!" }
+        player ()
+        counter 0
+      }
 
-            ]
-        }
-        footer () {
-          class' "app-footer"
-          childContent "Fun.Blazor.Sample"
-        }
-      ]
+      footer {
+        class' "app-footer"
+        "Fun.Blazor.Sample"
+      }
     }
