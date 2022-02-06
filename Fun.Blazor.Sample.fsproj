@@ -5,7 +5,7 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="Fun.Blazor.Bindings/MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services.fs" />

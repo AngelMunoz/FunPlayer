@@ -37,15 +37,15 @@ module App =
           }
 
           ul {
-            Virtualize' {
+            Virtualize'() {
               Items songs
-              ChildContent
-                (fun song ->
-                  li {
-                    style' "cursor: pointer;"
-                    ondblclick (fun _ -> player.play song |> ignore)
-                    $"{song}"
-                  })
+
+              ChildContent (fun song ->
+                li {
+                  style' "cursor: pointer;"
+                  ondblclick (fun _ -> player.play song |> ignore)
+                  $"{song}"
+                })
             }
 
           }
@@ -59,7 +59,6 @@ module App =
       main {
         h1 { "Welcome to Fun.Blazor!" }
         player ()
-        counter 0
       }
 
       footer {

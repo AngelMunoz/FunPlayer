@@ -9,7 +9,7 @@
       ]
     },
     "fun.blazor.cli": {
-      "version": "2.0.0-beta001",
+      "version": "2.0.0-beta004",
       "commands": [
         "fun-blazor"
       ]
