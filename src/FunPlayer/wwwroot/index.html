@@ -9,10 +9,15 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Fun.Blazor.Sample</title>
+    <meta name="msapplication-TileColor" content="#8D6E63" />
+    <meta name="theme-color" content="#8D6E63" />
+    <title>FunPlayer</title>
     <base href="/" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="stylesheet" href="index.css" />
   </head>
@@ -27,6 +32,7 @@
       navigator.serviceWorker.register("service-worker.js");
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="./js/interop.js"></script>
   </body>
 </html>

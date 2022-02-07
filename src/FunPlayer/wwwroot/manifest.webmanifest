@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "FunPlayer",
+    "short_name": "FunPlayer",
+    "start_url": "/",
+    "display": "standalone",
+    "display_override": [
+        "window-controls-overlay"
+    ],
+    "icons": [],
+    "background_color": "#8D6E63",
+    "theme_color": "#8D6E63",
+    "orientation": "portrait"
+}
