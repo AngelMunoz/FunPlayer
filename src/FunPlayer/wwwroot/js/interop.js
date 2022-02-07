@@ -68,6 +68,6 @@ window.FunPlayer = {
     loadFiles,
     getFiles: () => files.map(f => f.name),
     pause: () => audio.pause(),
-    supportsWindowControlsOverlay: () => 'windowControlsOverlay' in navigator,
+    supportsWindowControlsOverlay: () => 'windowControlsOverlay' in navigator && navigator['windowControlsOverlay'].visible,
     supportsFileSystemAccess: () => 'showOpenFilePicker' in window
 };
