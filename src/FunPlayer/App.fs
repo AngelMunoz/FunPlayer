@@ -76,7 +76,7 @@ module PlayerState =
 
 module App =
 
-  let private player =
+  let private playList =
     html.inject
       (fun (player: Player, files: FileManager, hook: IComponentHook) ->
         let _songs = hook.UseStore Array.empty<string>
@@ -90,12 +90,12 @@ module App =
           |> ignore
 
         let playSong song =
-          PlayerState.state.Publish (fun _ ->
-            { songName = song
-              duration = 0.
-              currentTime = 0.
-              playState = Stoped }
-            |> ValueSome)
+          { songName = song
+            duration = 0.
+            currentTime = 0.
+            playState = Stoped }
+          |> ValueSome
+          |> PlayerState.setSong
 
           player.play(song).AsTask()
           |> Async.AwaitTask
@@ -199,8 +199,12 @@ module App =
               }
 
               p { sprintf $"%A{playerState}" }
-
-              player
+              meter {
+                value playerState.currentTime
+                min 0
+                max playerState.duration
+              }
+              playList
             }
           }
         }
