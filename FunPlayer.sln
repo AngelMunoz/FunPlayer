@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{344C7FE6-D01
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FunPlayer", "src\FunPlayer\FunPlayer.fsproj", "{56B97025-096B-4A85-982B-7C11367BE98F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Bindings", "src\Fun.Blazor.Bindings\Fun.Blazor.Bindings.fsproj", "{8F669623-0509-4D61-8D36-4680CD800864}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,13 +20,8 @@ Global
 		{56B97025-096B-4A85-982B-7C11367BE98F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56B97025-096B-4A85-982B-7C11367BE98F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56B97025-096B-4A85-982B-7C11367BE98F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F669623-0509-4D61-8D36-4680CD800864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F669623-0509-4D61-8D36-4680CD800864}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F669623-0509-4D61-8D36-4680CD800864}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F669623-0509-4D61-8D36-4680CD800864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{56B97025-096B-4A85-982B-7C11367BE98F} = {344C7FE6-D010-45E7-91A0-E4CAAE148329}
-		{8F669623-0509-4D61-8D36-4680CD800864} = {344C7FE6-D010-45E7-91A0-E4CAAE148329}
 	EndGlobalSection
 EndGlobal
