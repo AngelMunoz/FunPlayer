@@ -7,6 +7,7 @@ module Services =
   type Player =
     abstract play: string -> ValueTask
     abstract pause: unit -> ValueTask
+    abstract unpause: unit -> ValueTask
 
   type FileManager =
     abstract getFiles: unit -> ValueTask<string []>
@@ -22,6 +23,8 @@ module Services =
         override _.play name =
           js.InvokeVoidAsync("FunPlayer.play", name)
 
+        override _.unpause() = js.InvokeVoidAsync("FunPlayer.unpause")
+
         override _.pause() = js.InvokeVoidAsync("FunPlayer.pause") }
 
   let GetFunFiles (js: IJSRuntime) =
@@ -34,7 +37,7 @@ module Services =
   let GetBrowserSupport (js: IJSRuntime) =
     { new BrowserSupport with
         override _.supportsFileSystemAccess() : ValueTask<bool> =
-          js.InvokeAsync("supportsWindowControlsOverlay")
+          js.InvokeAsync("FunPlayer.supportsFileSystemAccess")
 
         override _.supportsWindowControlsOverlay() : ValueTask<bool> =
-          js.InvokeAsync("supportsFileSystemAccess") }
+          js.InvokeAsync("FunPlayer.supportsWindowControlsOverlay") }

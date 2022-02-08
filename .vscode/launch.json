@@ -8,7 +8,15 @@
             "type": "blazorwasm",
             "name": "Launch and Debug Blazor WebAssembly Application",
             "request": "launch",
-            "url": "https://localhost:5000"
+            "browser": "edge",
+            "url": "https://localhost:5001",
+            "cwd": "${workspaceFolder}/src/FunPlayer",
+            "serverReadyAction": {
+                "action": "debugWithEdge",
+                "pattern": "listening on port ([0-9]+)",
+                "uriFormat": "https://localhost:%s",
+                "webRoot": "${workspaceFolder}/src/FunPlayer"
+            }
         }
     ]
 }

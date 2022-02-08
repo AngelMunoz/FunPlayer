@@ -41,8 +41,7 @@ const files = [];
  */
 async function play(name) {
     const file = files.find(f => f.name === name);
-    const url = URL.createObjectURL(file);
-    audio.src = url;
+    audio.src = URL.createObjectURL(file);
     return audio.play();
 }
 
@@ -55,6 +54,9 @@ async function loadFiles() {
     files.splice(0, files.length);
     for await (const [, fileHandle] of handle) {
         if (fileHandle instanceof FileSystemFileHandle) {
+            /**
+             * @type {File}
+             */
             const file = await fileHandle.getFile();
             if (file.type.includes("audio/")) {
                 files.push(file);
@@ -68,6 +70,7 @@ window.FunPlayer = {
     loadFiles,
     getFiles: () => files.map(f => f.name),
     pause: () => audio.pause(),
+    unpause: () => audio.play(),
     supportsWindowControlsOverlay: () => 'windowControlsOverlay' in navigator && navigator['windowControlsOverlay'].visible,
     supportsFileSystemAccess: () => 'showOpenFilePicker' in window
 };

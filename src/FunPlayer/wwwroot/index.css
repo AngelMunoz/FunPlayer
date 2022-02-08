@@ -1,26 +1,88 @@
+:root {
+  --fun-primary: #8d6e63;
+  --fun-foreground: var(--fun-primary);
+  --fun-background: #0c0c0c;
+  --fun-title-bar-height: env(titlebar-area-height, 34px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --fun-background: #f1f1f1;
+  }
+}
+
 html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 0;
   margin: 0;
+  color: var(--fun-foreground);
+  background-color: var(--fun-background);
 }
 
-#appbar {
-  position: sticky;
+.fun-app {
+  display: grid;
+  grid-template-areas:
+    "titlebar titlebar titlebar"
+    "library content playlist"
+    "mediabar mediabar mediabar";
+  grid-template-columns: 1fr 1fr 40%;
+  grid-template-rows: 0px 1fr 10%;
+  height: 100vh;
+}
+
+.fun-titlebar {
+  grid-area: titlebar;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0.5em;
+}
+
+.fun-title-bar-menu-item {
+  -webkit-app-region: none;
+}
+
+.with-overlay {
   left: env(titlebar-area-x);
   top: env(titlebar-area-y);
   -webkit-app-region: drag;
 }
-#menu-button {
+
+.fun-app.with-overlay {
+  grid-template-rows: var(--fun-title-bar-height) 1fr 10%;
+}
+
+.fun-playlist {
+  grid-area: playlist;
+  padding: 0.5em;
+  overflow-y: auto;
   -webkit-app-region: none;
 }
 
-.playlist {
-  max-height: 65vh;
-  overflow-y: auto;
+.fun-mb {
+  grid-area: mediabar;
+  padding: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  -webkit-app-region: none;
 }
-.mud-main-content {
-  height: calc(100vh - var(--mud-appbar-height, 64px));
-  overflow-y: auto;
+
+.fun-mb-media-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  margin-left: auto;
+}
+
+.fun-mb-state-btns {
+  display: flex;
+}
+
+.fun-mb-loop-btns {
+  flex: 0 1;
+  display: flex;
+  margin-left: auto;
 }
