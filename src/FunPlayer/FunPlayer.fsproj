@@ -13,7 +13,6 @@
     <!-- DON'T FORGET TO PIN THESE ONCE YOU ARE READY TO START -->
     <PackageReference Include="Fun.Blazor" Version="2.0.0-*" />
     <PackageReference Include="Fun.Blazor.Wasm" Version="2.0.0-*" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.*" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.*" PrivateAssets="all" />
   </ItemGroup>
