@@ -3,12 +3,13 @@ namespace FunPlayer
 open System
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
-open FunPlayer
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web
+open Microsoft.AspNetCore.Components.Web.Virtualization
 open Microsoft.JSInterop
 open FSharp.Control.Reactive
 open Fun.Blazor
+open FunPlayer
 open FunPlayer.Services
 
 type Song =
@@ -112,7 +113,7 @@ module Components =
             Virtualize'() {
               Items songs
 
-              ChildContent (fun song ->
+              childContent (fun song ->
                 li {
                   ondblclick (fun _ -> onplaySong song)
                   song.name

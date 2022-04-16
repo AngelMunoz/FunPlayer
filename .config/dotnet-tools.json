@@ -3,13 +3,13 @@
   "isRoot": true,
   "tools": {
     "fantomas-tool": {
-      "version": "4.6.0",
+      "version": "4.7.6",
       "commands": [
         "fantomas"
       ]
     },
     "fun.blazor.cli": {
-      "version": "2.0.0-beta004",
+      "version": "2.0.0-beta043",
       "commands": [
         "fun-blazor"
       ]
