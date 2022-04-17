@@ -102,28 +102,26 @@ module PlayerState =
 module Components =
   module Player =
     let playlist (songs: Song [] cval) (onplaySong: Song -> unit) =
-      let inline view () =
+      html.inject (
+        "fun-playlist",
+        fun () ->
+          adaptiview () {
+            let! songs = songs
 
-        adaptiview () {
-          let! songs = songs
+            aside {
+              class' "fun-playlist"
 
-          aside {
-            class' "fun-playlist"
-
-            Virtualize'() {
-              Items songs
-
-              childContent (fun song ->
-                li {
-                  ondblclick (fun _ -> onplaySong song)
-                  song.name
-                })
+              virtualize (
+                songs,
+                fun song ->
+                  li {
+                    ondblclick (fun _ -> onplaySong song)
+                    song.name
+                  }
+              )
             }
           }
-
-        }
-
-      html.inject ("fun-playlist", view)
+      )
 
     let mediaBar
       (state: PlayerState cval)
@@ -134,101 +132,103 @@ module Components =
       (onBack: unit -> Task)
       (onLoopChange: LoopState -> unit)
       =
-      let view () =
-        adaptiview () {
-          let! state = state
 
-          let mediaButtons =
-            section {
-              class' "fun-mb-state-btns"
+      html.inject (
+        "fun-mb",
+        fun () ->
+          adaptiview () {
+            let! state = state
 
-              match state.playState with
-              | Paused ->
-                button {
-                  onclick (fun _ -> onBack ())
-                  "Back"
-                }
+            let mediaButtons =
+              section {
+                class' "fun-mb-state-btns"
 
-                button {
-                  onclick (fun _ -> onUnpause ())
-                  "Play"
-                }
-              | Playing ->
-                button {
-                  onclick (fun _ -> onBack ())
-                  "Back"
-                }
+                match state.playState with
+                | Paused ->
+                  button {
+                    onclick (fun _ -> onBack ())
+                    "Back"
+                  }
 
-                button {
-                  onclick (fun _ -> onPause ())
-                  "Pause"
-                }
+                  button {
+                    onclick (fun _ -> onUnpause ())
+                    "Play"
+                  }
+                | Playing ->
+                  button {
+                    onclick (fun _ -> onBack ())
+                    "Back"
+                  }
 
-                button {
-                  onclick (fun _ -> onNext ())
-                  "onNext"
-                }
-              | Ready
-              | Stopped ->
-                button {
-                  onclick (fun _ -> onPlay ())
-                  "Play"
-                }
-            }
+                  button {
+                    onclick (fun _ -> onPause ())
+                    "Pause"
+                  }
 
-          let loopButtons =
-            section {
-              class' "fun-mb-loop-btns"
-
-              match state.loopState with
-              | Stop ->
-                button {
-                  onclick (fun _ -> onLoopChange One)
-                  "Off"
-                }
-              | One ->
-                button {
-                  onclick (fun _ -> onLoopChange All)
-                  "One"
-                }
-              | All ->
-                button {
-                  onclick (fun _ -> onLoopChange Random)
-                  "All"
-                }
-              | Random ->
-                button {
-                  onclick (fun _ -> onLoopChange Stop)
-                  "Random"
-                }
-            }
-
-          nav {
-            class' "fun-mb"
-
-            section {
-              class' "fun-mb-media-group"
-
-              input {
-                class' "fun-mb-slider"
-                type' "range"
-                value state.currentTime
-                step "any"
-                min 0
-                max state.duration
-
-                onchange (fun event ->
-                  printfn $"Seek %f{event.Value |> string |> float}")
+                  button {
+                    onclick (fun _ -> onNext ())
+                    "onNext"
+                  }
+                | Ready
+                | Stopped ->
+                  button {
+                    onclick (fun _ -> onPlay ())
+                    "Play"
+                  }
               }
 
-              mediaButtons
+            let loopButtons =
+              section {
+                class' "fun-mb-loop-btns"
+
+                match state.loopState with
+                | Stop ->
+                  button {
+                    onclick (fun _ -> onLoopChange One)
+                    "Off"
+                  }
+                | One ->
+                  button {
+                    onclick (fun _ -> onLoopChange All)
+                    "One"
+                  }
+                | All ->
+                  button {
+                    onclick (fun _ -> onLoopChange Random)
+                    "All"
+                  }
+                | Random ->
+                  button {
+                    onclick (fun _ -> onLoopChange Stop)
+                    "Random"
+                  }
+              }
+
+            nav {
+              class' "fun-mb"
+
+              section {
+                class' "fun-mb-media-group"
+
+                input {
+                  class' "fun-mb-slider"
+                  type' "range"
+                  value state.currentTime
+                  step "any"
+                  min 0
+                  max state.duration
+
+                  onchange (fun event ->
+                    printfn $"Seek %f{event.Value |> string |> float}")
+                }
+
+                mediaButtons
+              }
+
+              loopButtons
             }
-
-            loopButtons
           }
-        }
-
-      html.inject ("fun-mb", view)
+      )
 
 
 
@@ -240,111 +240,110 @@ module Components =
       | false -> "fun-titlebar"
       | true -> "fun-titlebar with-overlay"
 
-    let inline view () =
-      adaptiview () {
-        let! hasOverlay = hasOverlay
+    html.inject (
+      "fun-title-bar",
+      fun _ ->
+        adaptiview () {
+          let! hasOverlay = hasOverlay
 
-        menu {
-          class' (titlebarClass hasOverlay)
+          menu {
+            class' (titlebarClass hasOverlay)
 
-          li {
-            class' "fun-title-bar-menu-item"
-            onclick (fun _ -> onOpenDirectory ())
-            b { "Open Directory" }
+            li {
+              class' "fun-title-bar-menu-item"
+              onclick (fun _ -> onOpenDirectory ())
+              b { "Open Directory" }
+            }
           }
         }
-      }
-
-    html.inject ("fun-title-bar", view)
+    )
 
 module App =
   open Components
 
   let View () =
-    let inline view
-      (
-        hook: IComponentHook,
-        browser: BrowserSupport,
-        player: Player,
-        fileManager: FileManager
-      ) =
-      let _withOverlay = hook.UseStore false
+    html.inject (
+      "fun-player-app",
+      fun ((hook: IComponentHook),
+           (browser: BrowserSupport),
+           (player: Player),
+           (fileManager: FileManager)) ->
+        let _withOverlay = hook.UseStore false
 
-      hook.OnFirstAfterRender
-      |> Observable.map (fun _ ->
-        printfn "Olv"
-        browser.supportsWindowControlsOverlay().AsTask())
-      |> Observable.switchTask
-      |> Observable.subscribe _withOverlay.Publish
-      |> hook.AddDispose
+        hook.OnFirstAfterRender
+        |> Observable.map (fun _ ->
+          printfn "Olv"
+          browser.supportsWindowControlsOverlay().AsTask())
+        |> Observable.switchTask
+        |> Observable.subscribe _withOverlay.Publish
+        |> hook.AddDispose
 
-      let onNext () = task { return () } :> Task
-      let onBack () = task { return () } :> Task
-      let onLoopChange loopState = ()
+        let onNext () = task { return () } :> Task
+        let onBack () = task { return () } :> Task
+        let onLoopChange loopState = ()
 
-      adaptiview () {
-        let! playlist = PlayerState.playlist
-        let _withOverlay = hook.UseCVal _withOverlay
-        let! withOverlay = _withOverlay
-        let! playerState = PlayerState.state
+        adaptiview () {
+          let! playlist = PlayerState.playlist
+          let _withOverlay = hook.UseCVal _withOverlay
+          let! withOverlay = _withOverlay
+          let! playerState = PlayerState.state
 
-        let playerState =
-          playerState
-          |> ValueOption.defaultValue PlayerState.empty
-          |> cval
+          let playerState =
+            playerState
+            |> ValueOption.defaultValue PlayerState.empty
+            |> cval
 
-        let loadSongs () =
-          task {
-            do! fileManager.loadFiles ()
-            let! files = fileManager.getFiles ()
+          let loadSongs () =
+            task {
+              do! fileManager.loadFiles ()
+              let! files = fileManager.getFiles ()
 
-            files
-            |> Array.map Song.FromString
-            |> PlayerState.setSongs
-          }
+              files
+              |> Array.map Song.FromString
+              |> PlayerState.setSongs
+            }
 
-        let onPlaySong (song: Song voption) =
-          task {
-            match song with
-            | ValueSome song ->
-              { PlayerState.empty with name = song.name }
-              |> ValueSome
-              |> PlayerState.setSong
-
-              do! player.play (song.fullName)
-            | ValueNone ->
-              match playlist |> Array.tryHead with
-              | Some song ->
+          let onPlaySong (song: Song voption) =
+            task {
+              match song with
+              | ValueSome song ->
                 { PlayerState.empty with name = song.name }
                 |> ValueSome
                 |> PlayerState.setSong
 
                 do! player.play (song.fullName)
-              | None -> printfn "No songs available"
+              | ValueNone ->
+                match playlist |> Array.tryHead with
+                | Some song ->
+                  { PlayerState.empty with name = song.name }
+                  |> ValueSome
+                  |> PlayerState.setSong
+
+                  do! player.play (song.fullName)
+                | None -> printfn "No songs available"
+            }
+            :> Task
+
+          let titlebarClass =
+            match withOverlay with
+            | false -> "fun-app"
+            | true -> "fun-app with-overlay"
+
+          main {
+            class' titlebarClass
+            Titlebar _withOverlay (fun _ -> loadSongs () |> ignore)
+
+            Player.playlist PlayerState.playlist (fun song ->
+              song |> ValueSome |> onPlaySong |> ignore)
+
+            Player.mediaBar
+              playerState
+              (fun _ -> onPlaySong ValueNone)
+              (fun _ -> player.pause().AsTask())
+              (fun _ -> player.unpause().AsTask())
+              onNext
+              onBack
+              onLoopChange
           }
-          :> Task
-
-        let titlebarClass =
-          match withOverlay with
-          | false -> "fun-app"
-          | true -> "fun-app with-overlay"
-
-        main {
-          class' titlebarClass
-          Titlebar _withOverlay (fun _ -> loadSongs () |> ignore)
-
-          Player.playlist PlayerState.playlist (fun song ->
-            song |> ValueSome |> onPlaySong |> ignore)
-
-          Player.mediaBar
-            playerState
-            (fun _ -> onPlaySong ValueNone)
-            (fun _ -> player.pause().AsTask())
-            (fun _ -> player.unpause().AsTask())
-            onNext
-            onBack
-            onLoopChange
         }
-      }
-
-    html.inject view
+    )
