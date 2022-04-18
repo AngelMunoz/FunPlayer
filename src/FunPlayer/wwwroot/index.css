@@ -1,88 +1,242 @@
 :root {
-  --fun-primary: #8d6e63;
-  --fun-foreground: var(--fun-primary);
-  --fun-background: #0c0c0c;
-  --fun-title-bar-height: env(titlebar-area-height, 34px);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --fun-background: #f1f1f1;
-  }
+    --fun-primary: #8d6e63;
+    --fun-foreground: var(--fun-primary);
+    --fun-background: #0c0c0c;
+    --fun-title-bar-height: env(titlebar-area-height, 34px);
+    --fun-slider-thumb-border: 1px solid var(--fun-foreground);
+    --fun-slider-thumb-height: 36px;
+    --fun-slider-thumb-width: 16px;
+    --fun-slider-thumb-border-radius: 5px;
+    --fun-slider-thumb-background: var(--fun-foreground);
+    --fun-slider-thumb-shadow-box: 1px 1px 1px var(--fun-background), 0px 0px 1px var(--fun-background);
+    --fun-slider-track-width: 100%;
+    --fun-slider-track-height: 8.4px;
+    --fun-slider-track-box-shadow: var(--fun-slider-thumb-shadow-box);
+    --fun-slider-track-background: var(--fun-background);
+    --fun-slider-track-border-radius: 5px;
+    --fun-slider-track-border: 0.2px solid var(--fun-foreground);
 }
 
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: 0;
-  margin: 0;
-  color: var(--fun-foreground);
-  background-color: var(--fun-background);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 0;
+    margin: 0;
+    color: var(--fun-foreground);
+    background-color: var(--fun-background);
 }
 
 .fun-app {
-  display: grid;
-  grid-template-areas:
-    "titlebar titlebar titlebar"
-    "library content playlist"
-    "mediabar mediabar mediabar";
-  grid-template-columns: 1fr 1fr 40%;
-  grid-template-rows: 0px 1fr 10%;
-  height: 100vh;
+    display: grid;
+    grid-template-areas:
+        "titlebar titlebar titlebar"
+        "library content playlist"
+        "mediabar mediabar mediabar";
+    grid-template-columns: 1fr 1fr 40%;
+    grid-template-rows: 5% 1fr 10%;
+    height: 100vh;
 }
 
 .fun-titlebar {
-  grid-area: titlebar;
-  position: fixed;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0.5em;
+    grid-area: titlebar;
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
 }
+
 
 .fun-title-bar-menu-item {
-  -webkit-app-region: none;
+    -webkit-app-region: none;
+    height: 41px;
+    border: none;
+    background-color: var(--fun-background);
+    color: var(--fun-foreground);
+    padding: 1em 0.5em;
+    cursor: pointer;
 }
 
+    .fun-title-bar-menu-item:hover {
+        border-bottom: 1px solid var(--fun-foreground);
+    }
+
 .with-overlay {
-  left: env(titlebar-area-x);
-  top: env(titlebar-area-y);
-  -webkit-app-region: drag;
+    left: env(titlebar-area-x);
+    top: env(titlebar-area-y);
+    -webkit-app-region: drag;
 }
 
 .fun-app.with-overlay {
-  grid-template-rows: var(--fun-title-bar-height) 1fr 10%;
+    grid-template-rows: var(--fun-title-bar-height) 1fr 10%;
 }
 
 .fun-playlist {
-  grid-area: playlist;
-  padding: 0.5em;
-  overflow-y: auto;
-  -webkit-app-region: none;
+    grid-area: playlist;
+    padding: 0.5em;
+    overflow-y: auto;
+    -webkit-app-region: none;
+    list-style: none;
 }
 
+.fun-playlist-item {
+    padding: 0.5em 1em;
+    border-bottom: 1px inset var(--fun-foreground);
+    background-color: var(--fun-background);
+    scroll-behavior: smooth;
+    cursor: pointer;
+}
+
+    .fun-playlist-item:hover {
+        --fun-background: #f1f1f1;
+    }
+
 .fun-mb {
-  grid-area: mediabar;
-  padding: 0.5em;
-  display: flex;
-  justify-content: space-between;
-  -webkit-app-region: none;
+    grid-area: mediabar;
+    padding: 0.5em;
+    display: flex;
+    place-content: center;
+    -webkit-app-region: none;
 }
 
 .fun-mb-media-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0;
-  margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    .fun-mb-media-group .song-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .fun-mb-media-group .song-slider {
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+.fun-mb-media-buttons {
+    display: flex;
+    width: 28vw;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .fun-mb-state-btns {
-  display: flex;
+    display: flex;
+    place-content: center;
 }
 
 .fun-mb-loop-btns {
-  flex: 0 1;
-  display: flex;
-  margin-left: auto;
+    flex: 0 1;
+    display: flex;
+    place-content: center;
 }
+
+.fun-media-btn {
+    height: 42px;
+    width: 42px;
+    border-radius: 4px;
+    border: 1px groove var(--fun-foreground);
+    color: var(--fun-foreground);
+    padding: 1em 0.5em;
+    cursor: pointer;
+    background: var(--fun-background)
+}
+
+    .fun-media-btn:hover {
+        border-style: solid;
+    }
+
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --fun-background: #f1f1f1;
+    }
+
+    .fun-playlist-item:hover,
+    .fun-media-btn:hover {
+        --fun-background: #0c0c0c;
+    }
+}
+
+
+
+
+.song-slider {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+}
+
+    .song-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+    }
+
+    .song-slider:focus {
+        outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+    }
+
+    .song-slider::-ms-track {
+        width: 100%;
+        cursor: pointer;
+        /* Hides the slider so custom styles can be added */
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+    /* Special styling for WebKit/Blink */
+    .song-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        margin-top: -14px;
+        cursor: pointer;
+        border: var(--fun-slider-thumb-border);
+        height: var(--fun-slider-thumb-height);
+        width: var(--fun-slider-thumb-width);
+        border-radius: var(--fun-slider-thumb-border-radius);
+        background: var(--fun-slider-thumb-background);
+        box-shadow: var(--fun-slider-thumb-shadow-box);
+    }
+
+    /* All the same stuff for Firefox */
+    .song-slider::-moz-range-thumb {
+        border: var(--fun-slider-thumb-border);
+        height: var(--fun-slider-thumb-height);
+        width: var(--fun-slider-thumb-width);
+        border-radius: var(--fun-slider-thumb-border-radius);
+        background: var(--fun-slider-thumb-background);
+        box-shadow: var(--fun-slider-thumb-shadow-box);
+        cursor: pointer;
+    }
+
+    .song-slider::-webkit-slider-runnable-track {
+        cursor: pointer;
+        width: var(--fun-slider-track-width);
+        height: var(--fun-slider-track-height);
+        box-shadow: var(--fun-slider-track-box-shadow);
+        background: var(--fun-slider-track-background);
+        border-radius: var(--fun-slider-track-border-radius);
+        border: var(--fun-slider-track-border);
+    }
+
+    .song-slider:focus::-webkit-slider-runnable-track {
+        background: var(--fun-slider-track-background);
+    }
+
+    .song-slider::-moz-range-track {
+        cursor: pointer;
+        width: var(--fun-slider-track-width);
+        height: var(--fun-slider-track-height);
+        box-shadow: var(--fun-slider-track-box-shadow);
+        background: var(--fun-slider-track-background);
+        border-radius: var(--fun-slider-track-border-radius);
+        border: var(--fun-slider-track-border);
+    }
