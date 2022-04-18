@@ -1,11 +1,14 @@
 [<AutoOpen>]
 module FunPlayer.Extensions
 
-open Fun.Blazor
-open Fun.Blazor.Operators
+open System.Collections.Generic
+open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web.Virtualization
 
-type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>
+open Fun.Blazor
+open Fun.Blazor.Operators
+
+type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> IComponent>
   () =
   inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
 
@@ -54,7 +57,7 @@ type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micro
   member inline _.Items
     (
       [<InlineIfLambda>] render: AttrRenderFragment,
-      x: System.Collections.Generic.ICollection<'TItem>
+      x: ICollection<'TItem>
     ) =
     render ==> ("Items" => x)
 
